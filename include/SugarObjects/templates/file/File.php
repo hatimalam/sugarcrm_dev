@@ -48,7 +48,22 @@ class File extends Basic
     function File(){
 		parent::Basic();
 	}
-
+    /**
+     * @see SugarBean::populateFromRow
+     * Fixes bug #74805 for file type module in SugarCRM 7
+     * Fixed by: Hatim Alam
+     * Dated: 15th Feb 2016
+     */
+    public function populateFromRow($row, $convert = false)
+    {
+        $row = parent::populateFromRow($row, $convert);
+        //if $this->name is empty, set it with document_name
+        if (!empty($this->document_name) && empty($this->name)) {
+            $this->name = $this->document_name;
+        }
+        return $row;
+    }
+    
 	/**
 	 * @see SugarBean::save()
 	 */
